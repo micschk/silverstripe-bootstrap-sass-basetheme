@@ -1,4 +1,4 @@
-# SilverStripe Bootstrap Theme v1.2.0
+# SilverStripe Bootstrap Theme
 
 A theme using SASS versions of Twitter Bootstrap and Font Awesome, and Bower and Grunt. Adapted from jeffwhitfield/silverstripe-bootstrap-theme (less), taking (simplified) grunt-inspiration from XploreNet/bootstripe.
 
@@ -11,7 +11,7 @@ A theme using SASS versions of Twitter Bootstrap and Font Awesome, and Bower and
 - Run `grunt build` to generate an initial compile of the SASS files to CSS. 
 - Update your SilverStripe configuration to use your new theme.
 
-NOTES:
+### NOTES:
 - All SASS, JS & IMG source files are located in src/, they are compiled/optimized and concatenated into the dist/ directory
 - Template files are left untouched in the templates directory, where Silverstripe expects them
 - The css/editor.css file is just there to be included in the CMS and pull in build/css/editor.css if there
@@ -26,14 +26,18 @@ $ bower install
 ```
 If you require specific versions for these components, update the `bower.json` config file prior to installing the components. You can later update these dependencies by running `bower update`.
 
-### Grunt (/compass)
-While you could use basic compass to compile your sass to css (basic configuration included), it's recommended to use the Grunt taskrunner instead. [http://gruntjs.com/](Grunt) allows you to automate repetitive tasks in Javascript syntax (like minification, compilation, unit testing, linting, etc). The included Gruntfile.js contains extra functionality like running prefixer after compilation (adds browser prefixes to required css3). This gruntfile takes its inspiration from XploreNet/bootstripe (simplified). You can change or add your own tasks if you like, it's even possible to handle deployment via grunt [](grunt-shipit).
+### Grunt (/compass) & NPM
+While you could just use compass to compile your sass to css (basic configuration included), it's recommended to use the Grunt taskrunner instead. [Grunt](http://gruntjs.com/) allows you to automate repetitive tasks in Javascript syntax (like minification, compilation, unit testing, linting, etc). The included Gruntfile.js contains extra functionality like running prefixer after compilation (adds browser prefixes to required css3) and uglifying your javascript, as well as generating responsive versions of background images. 
 
-If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins.
+The various tasks Grunt generates, are run by grunt modules. The scripts & modules required are installed (within your theme directory) by running `npm install`. 
+
+The included gruntfile takes its inspiration from XploreNet/bootstripe (slightly simplified). You can change or add your own tasks if you like, it's even possible to handle deployment via grunt [grunt-shipit](https://github.com/shipitjs/grunt-shipit).
+
+If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create/edit a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins.
 
 While you're developing just run `grunt` from the theme directory and you'll get live reload in your browser. Assuming you've installed the plugin for [Chrome](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/livereload/).
 
-Then to create a production version, running `grunt build` will create an optimised version of your theme using a.o. uglify to compress the css & javascript.
+Then to create a production version, running `grunt build` will create an optimised version of your theme using a.o. minify your css & uglify your javascript.
 
 
 # Tools
