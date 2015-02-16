@@ -1,0 +1,42 @@
+// ============================================================================
+// Mixins / Responsive image bg - breakpoints in gruntfile 768, 992, 1200, 2048
+//
+// Applies the background-image property for a given at all breakpoints,
+// including double resolution for high-DPI devices.
+// ============================================================================
+
+@mixin responsive-bg($image) {
+  $imagePath: '../images/backgrounds/' + $image;
+
+  background-image: url($imagePath + '-xs.jpg');
+
+  @media (min-width: $screen-sm) {
+    background-image: url($imagePath + '-sm.jpg');
+  }
+
+  @media (min-width: $screen-md) {
+    background-image: url($imagePath + '-md.jpg');
+  }
+
+  @media (min-width: $screen-lg) {
+    background-image: url($imagePath + '-lg.jpg');
+  }
+
+  @media
+  (-webkit-min-device-pixel-ratio: 2),
+  (min-resolution: 192dpi) {
+    background-image: url($imagePath + '-xs@2x.jpg');
+
+    @media (min-width: $screen-sm) {
+      background-image: url($imagePath + '-sm@2x.jpg');
+    }
+
+    @media (min-width: $screen-md) {
+      background-image: url($imagePath + '-md@2x.jpg');
+    }
+
+    @media (min-width: $screen-lg) {
+      background-image: url($imagePath + '-lg@2x.jpg');
+    }
+  }
+}

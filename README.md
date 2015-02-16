@@ -1,95 +1,75 @@
 # SilverStripe Bootstrap Theme v1.2.0
 
-A SilverStripe Bootstrap theme that incorporates Twitter Bootstrap and Font Awesome
+A theme using SASS versions of Twitter Bootstrap and Font Awesome, and Bower and Grunt. Adapted from jeffwhitfield/silverstripe-bootstrap-theme (less), taking (simplified) grunt-inspiration from XploreNet/bootstripe.
 
-## Installation ##
+## Quick installation steps
 
- * Install add-on via Composer (`composer require jeffwhitfield/silverstripe-bootstrap-theme dev-master`) OR download a copy from the repository.
- * Create a folder of your choice within the `themes/` directory of your SilverStripe project to store your custom theme in.
- * If you've downloaded the add-on, copy all files from the repository into this directory.
- * If you've installed the add-on using Composer, copy all the files from the `themes/bootstrap` directory into your custom theme directory.
- * Run `bower install` within your theme directory.
- * Update the `init()` method in your default page controller and add additional methods.
+- Install add-on via Composer (`composer require micschk/silverstripe-bootstrap-sass-basetheme dev-master`) OR clone/download a copy from the repository.
+- Extract/copy/move it to a theme directory of your choice while removing the .git/ directory from this directory.
+- From the new theme directory, run `npm install` and `bower install` from the command line.
+- Update `Gruntfile.js` and set `config.themeName` to the new directory name.
+- Run `grunt build` to generate an initial compile of the SASS files to CSS. 
+- Update your SilverStripe configuration to use your new theme.
 
-For more information about installation, see Configuration below.
+NOTES:
+- All SASS, JS & IMG source files are located in src/, they are compiled/optimized and concatenated into the dist/ directory
+- Template files are left untouched in the templates directory, where Silverstripe expects them
+- The css/editor.css file is just there to be included in the CMS and pull in build/css/editor.css if there
+- All JS is included in templates/Includes/Javascripts.ss, scripts may break when including them from the Silverstripe php Require::javascript system. Dont use the silverstripe Require::javascript system.
 
-## Configuration ##
+## How to use
 
-The default *bootstrap* theme includes all CSS, javascript, LESS, and template files for the site. It is recommended that you create a new theme and copy all the files from the *bootstrap* directory into your own custom theme directory. This way, if changes are made to the SilverStripe Bootstrap Theme add-on, you'll have a much easier time updating your theme.
-
-In order to use this theme you'll need to do a few things to get started with it:
-
-First, you'll need to run the `bower install` command from within your theme directory. The theme requires that you use Bower to manage jQuery, Modernizr, Bootstrap, and Font Awesome. The benefit of this is that, should any of these components change, you can upgrade them yourself without having to rely on the SilverStripe Bootstrap Theme add-on to be updated. If you require specific versions for these components, update the `bower.json` config file prior to installing the components.
-
-Second, you'll need to run an initial compilation of the LESS files prior to viewing a page. To compile CSS from LESS, you'll need to provide your own LESS pre-processor. For Mac users, [CodeKit](http://incident57.com/codekit/) is recommended. For Windows users, give [Prepros](http://alphapixels.com/prepros/) a try. Be sure to set it so that the resulting CSS files are minified/compressed for production use.
-
-Lastly, you'll need to update your default Page class (`/mysite/code/Page.php`) to allow SilverStripe to control the optimization of all the javascript and CSS. To do this, update the `init()` method in your `Page_Controller` or (whatever default controller you'll be using) with the following code:
-
-```php
-    public function init() {
-        parent::init();
-        $ThemeDir =  $this->ThemeDir();
-        Requirements::set_write_js_to_body(true);
-        Requirements::set_combined_files_folder($ThemeDir.'/_requirements');
-        Requirements::combine_files(
-            'site.css',
-            array(
-                $ThemeDir.'/css/site.css',
-            )
-        );
-        Requirements::javascript("//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js");
-        Requirements::combine_files(
-            'site.js',
-            array(
-                $ThemeDir.'/javascript/libs.js',
-                $ThemeDir.'/bower_components/bootstrap/js/affix.js',
-                $ThemeDir.'/bower_components/bootstrap/js/alert.js',
-                $ThemeDir.'/bower_components/bootstrap/js/button.js',
-                $ThemeDir.'/bower_components/bootstrap/js/carousel.js',
-                $ThemeDir.'/bower_components/bootstrap/js/collapse.js',
-                $ThemeDir.'/bower_components/bootstrap/js/dropdown.js',
-                $ThemeDir.'/bower_components/bootstrap/js/modal.js',
-                $ThemeDir.'/bower_components/bootstrap/js/tooltip.js',
-                $ThemeDir.'/bower_components/bootstrap/js/popover.js',
-                $ThemeDir.'/bower_components/bootstrap/js/scrollspy.js',
-                $ThemeDir.'/bower_components/bootstrap/js/tab.js',
-                $ThemeDir.'/bower_components/bootstrap/js/transition.js',
-                $ThemeDir.'/javascript/main.js'
-            )
-        );
-    }
+### Bower
+The theme uses Bower for management of front-end dependencies. You'll need to run the `bower install` command from within your theme directory to install Bootstrap, Font Awesome, Modernizr & jQuery (modern & legacy). 
 ```
-
-**Note: Pay careful attention to the version of jQuery being loaded in the Requirements! By default, it's set to the version of jQuery that was current at the time this add-on was last updated. If you need to change it, be sure to change it in your `init()` method to match whatever version you are loading up with Bower.**
-
-When the site environment is in *live* mode, all CSS files are combined and saved to `/themes/{$ThemeDir}/_requirements/site.css`. Javascript is combined/compressed to `/themes/{$ThemeDir}/_requirements/site.js`. It is recommended that you add any further javascript and CSS files here to ensure they're properly optimized for better performance. Keep in mind that only javascript receives any compression. While CSS files are concatenated, you'll need to compress the CSS files yourself or use something the like the [Minify CSS Module](https://github.com/nathancox/silverstripe-minify) to compress CSS files on the fly.
-
-
-In addition to the `init()` method changes, I recommend adding one additional method to your controllers:
-
-```php
-    public function Copyright($startYear = "", $separator = "-") {
-        $currentYear = date('Y');
-        if(!empty($startYear)) {
-            $output = ($startYear>=$currentYear ? $currentYear : $startYear.$separator.$currentYear);
-        } else {
-            $output = $currentYear;
-        }
-        return $output;
-    }
+$ bower install
 ```
-This a simple Copyright method that is used in the footer template to return a full copyright for the current year.
+If you require specific versions for these components, update the `bower.json` config file prior to installing the components. You can later update these dependencies by running `bower update`.
 
-## Bugtracker ##
+### Grunt (/compass)
+While you could use basic compass to compile your sass to css (basic configuration included), it's recommended to use the Grunt taskrunner instead. [http://gruntjs.com/](Grunt) allows you to automate repetitive tasks in Javascript syntax (like minification, compilation, unit testing, linting, etc). The included Gruntfile.js contains extra functionality like running prefixer after compilation (adds browser prefixes to required css3). This gruntfile takes its inspiration from XploreNet/bootstripe (simplified). You can change or add your own tasks if you like, it's even possible to handle deployment via grunt [](grunt-shipit).
 
-Bugs are tracked on [github.com](https://github.com/jeffwhitfield/silverstripe-bootstrap-theme/issues). Feel free to offer suggestions and contribute to the codebase.
+If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins.
 
-## Links ##
+While you're developing just run `grunt` from the theme directory and you'll get live reload in your browser. Assuming you've installed the plugin for [Chrome](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/livereload/).
 
- * [SilverStripe](http://www.silverstripe.org)
- * [Twitter Bootstrap](http://getbootstrap.com/)
- * [Font Awesome](http://fortawesome.github.io/Font-Awesome/)
+Then to create a production version, running `grunt build` will create an optimised version of your theme using a.o. uglify to compress the css & javascript.
 
-## Changelog ##
 
-[Changelog](https://github.com/jeffwhitfield/silverstripe-bootstrap-theme/blob/master/changelog.md)
+# Tools
+Largely copied/adapted from XploreNet/bootstripe
+
+### Custom Fonts
+
+If you need to use a custom, say from [Google Fonts](https://www.google.com/fonts), there are two places you need to include it.
+
+First is as a `<link>` in the head of `src/templates/Page.ss` (or as an @include in your scss file).
+
+The second is if you want the font to appear in the CMS while editing pages, in which case include as a css `@import` at the top of `src/sass/editor.scss`.
+
+You can then override the Bootstrap font variables to apply your font as required.
+
+### Favicons
+
+Replace `src/favicon.png` with a favicon of your choice and it will be automatically converted to the appropriate formats. `templates/Includes/Icons.ss` has the correct code to include all the generated versions.
+
+It's recommended to use a 512 x 512 pixel as your source for your favicon, with a transparent background.
+Some versions of the favicon will apply a background colour which is defined in `Gruntfile.js`.
+
+### Responsive Images
+
+A Sass mixin is provided to apply a background image appropriate for the various breakpoints to any css class.
+
+1. Save your image into `src/images/backgrounds`, preferably at 4,096px wide or greater.
+2. In your css class definition apply the mixin `@include responsive-bg(image_name);` without the extension (generated images are all jpg).
+3. Apply your own background sizing to your class, e.g. `background-size: cover;`.
+
+During Grunt compilation a new version of the image will be generated for each breakpoint, and for high-DPI devices.
+The mixin will apply the generated images with the `background-image` property as appropriate.
+
+The generated images are designed to be displayed full-width at the given breakpoint, so this system is ideal for banners or carousels.
+
+License
+-------
+
+[MIT License](http://en.wikipedia.org/wiki/MIT_License)

@@ -10,9 +10,11 @@
 	<% base_tag %>
     <title><% if $MetaTitle %>$MetaTitle<% else %>$Title<% end_if %> &raquo; $SiteConfig.Title</title>
 	$MetaTags(false)
-    <!-- Place favicon.ico and apple-touch-icon.png in the root of your domain and delete these references -->
-    <link rel="shortcut icon" href="{$ThemeDir}/icons/favicon.ico">
-    <link rel="apple-touch-icon" href="{$ThemeDir}/icons/apple-touch-icon.png">
+	
+    <% include Icons %>
+	
+	<link rel="stylesheet" href="$ThemeDir/dist/css/style.css">
+	
     <script>
     themedir = '{$ThemeDir}';
     </script>
@@ -38,6 +40,8 @@ $Layout
 <% include Footer %>
 
 <div id="back-to-top" data-spy="affix" data-offset-top="100"><a href="#" class="btn btn-default"><i class="fa fa-chevron-up"><span class="hide">Back to Top</span></i></a></div>
+
+<% include Javascripts %>
 
 </body>
 </html>

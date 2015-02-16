@@ -1,26 +1,29 @@
 {
-    "name": "jeffwhitfield/silverstripe-bootstrap-theme",
-    "description": "A SilverStripe Bootstrap theme that incorporates HTML5 Boilerplate, Twitter Bootstrap, and Font Awesome",
-    "type": "silverstripe-theme",
-    "keywords": ["silverstripe", "theme"],
-    "license": "Apache-2.0",
-    "authors": [
-        {
-            "name": "Jeff Whitfield",
-            "homepage": "http://thejeffwhitfield.com"
-        }
-    ],
-    "require": {
-        "composer/installers": "*",
-        "silverstripe/framework": ">=3.0"
-    },
-    "support": {
-        "issues": "https://github.com/jeffwhitfield/silverstripe-bootstrap-theme/issues"
-    },
-    "extra": {
-        "installer-name": "bootstrap"
-    },
-    "replace": {
-        "jeffwhitfield/silverstripe-bootstrap-theme": "*"
-    }
+	"name": "micschk/silverstripe-bootstrap-sass-basetheme",
+	"description": "A theme using HTML5 Boilerplate, SASS versions of Twitter Bootstrap and Font Awesome, and Bower and Grunt",
+	"type": "silverstripe-theme",
+	"keywords": ["silverstripe", "theme"],
+	"license": "Apache-2.0",
+	"authors": [
+		{
+			"name": "Michael van Schaik",
+			"homepage": "http://restruct.nl"
+		}
+	],
+	"require": {
+		"silverstripe/cms": "~3.0",
+		"silverstripe/framework": "~3.0"
+	},
+	"support": {
+		"issues": "https://github.com/micschk/silverstripe-bootstrap-sass-basetheme/issues"
+	},
+	"extra": {
+		"installer-name": "bootstrap-sass"
+	},
+	"replace": {
+		"micschk/silverstripe-bootstrap-sass-basetheme": "*"
+	},
+	"extra": {
+		"installer-name": "bootstrap-base"
+	}
 }
